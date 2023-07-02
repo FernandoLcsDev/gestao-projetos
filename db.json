@@ -1,14 +1,21 @@
 {
   "projects": [
     {
-      "name": "projeto 1",
+      "name": "Novo Projeto",
       "budget": "1000",
       "category": {
         "id": "1",
         "name": "infra"
       },
-      "any": 0,
-      "services": [],
+      "cost": 900,
+      "services": [
+        {
+          "name": "aaaa",
+          "cost": "900",
+          "description": "aaaa",
+          "id": "0ca16a79-55ca-4a31-b77e-c36682535e74"
+        }
+      ],
       "id": 1
     }
   ],

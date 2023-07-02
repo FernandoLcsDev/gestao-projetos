@@ -1,3 +1,5 @@
+//import { parse } from 'path';
+import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react'
 import styles from './css/Project.module.css'
 import { useParams } from 'react-router-dom'
@@ -5,6 +7,7 @@ import Loading from '../layout/Loading'
 import Container from '../layout/Container'
 import ProjectForm from '../project/ProjectForm'
 import Message from '../layout/Message'
+import ServiceForm from '../service/ServiceForm'
 
 function Project() {
     const { id } = useParams()
@@ -28,6 +31,37 @@ function Project() {
                 .catch((err) => console.log(err))
         }, 400)
     }, [id])
+
+    function createService(project) {
+        const lastService = project.services[project.services.length - 1]
+        
+
+        lastService.id = uuidv4()
+
+        const lastServiceCost = lastService.cost
+        const newCost = parseFloat(project.cost) + parseFloat(lastServiceCost)
+
+        if(newCost > parseFloat(project.budget)) {
+            setMessage('Orçamento ultrapassado, verifique o valor do serviço')
+            setType('error')
+            project.services.pop()
+            return false
+        }
+
+        project.cost = newCost
+
+        fetch(`http://localhost:5000/projects/${project.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(project)
+        }).then((resp) => resp.json())
+            .then((data) => {
+                console.log(data)
+            })
+            .catch((err) => console.log(err))
+    }
 
     function toogleProjectForm() {
         setShowProject(!showProjectForm)
@@ -81,7 +115,7 @@ function Project() {
                                         <span>Total de Orçamento</span> R${project.budget}
                                     </p>
                                     <p>
-                                        <span>Total Utilizado</span> R${project.cost}
+                                        <span>Total Utilizado</span> R${project.cost || 0}
                                     </p>
                                 </div>
                             ) : (
@@ -95,7 +129,13 @@ function Project() {
                             <h2>Adicione um serviço</h2>
                             <button className={styles.btn} onClick={toogleServiceForm}>{!showServiceForm ? 'Adicionar serviço' : 'Fechar'}</button>
                             <div className={styles.project_info}>
-                                {showServiceForm && <div>Formulário do serviço</div>}
+                                {showServiceForm && (
+                                    <ServiceForm
+                                        handleSubmit={createService}
+                                        btnText="Adicionar serviço"
+                                        projectData={project}
+                                    />
+                                )}
                             </div>
                         </div>
                         <h2>Serviços</h2>
