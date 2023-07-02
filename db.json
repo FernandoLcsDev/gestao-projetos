@@ -7,16 +7,33 @@
         "id": "1",
         "name": "infra"
       },
-      "cost": 900,
+      "cost": 950,
       "services": [
         {
           "name": "aaaa",
           "cost": "900",
           "description": "aaaa",
           "id": "0ca16a79-55ca-4a31-b77e-c36682535e74"
+        },
+        {
+          "name": "aaa",
+          "cost": "50",
+          "description": "aaa",
+          "id": "ade872fd-a2a2-4212-af73-aab4e184eb9e"
         }
       ],
       "id": 1
+    },
+    {
+      "name": "Projeto 2",
+      "budget": "10000",
+      "category": {
+        "id": "2",
+        "name": "Desenvolvimento"
+      },
+      "cost": 0,
+      "services": [],
+      "id": 2
     }
   ],
   "categories": [
